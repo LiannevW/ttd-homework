@@ -15,6 +15,8 @@ class Codebreaker
 
     def guess(input)
       input_length_check(input)
+      no_matches(input)
+
     end
 
     #private(?)
@@ -23,6 +25,12 @@ class Codebreaker
           output.puts "Try guessing a number with four digits"
         else
           return
+        end
+      end
+
+      def no_matches(input)
+        if input.to_i != @secret_number
+          output.puts ""
         end
       end
   end
