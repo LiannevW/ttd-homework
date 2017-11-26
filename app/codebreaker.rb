@@ -15,24 +15,19 @@ class Codebreaker
 
     def guess(input)
       @input = input
-      input_length_check(input)
+      @answer = []
+      input_length_check
       count_total_match
       count_exact_match
       count_number_match
-      @answer = []
-      answer_plusses
-      answer_minus
+      answer_plusses_and_minus
       answer_to_string
     end
 
 private
 
-    def input_length_check(input)
-      if input.length != 4
-        output.puts "Try guessing a number with four digits"
-      else
-        return
-      end
+    def input_length_check
+      output.puts "Try guessing a number with four digits" if @input.length != 4
     end
 
     def count_total_match
@@ -49,18 +44,13 @@ private
     end
 
     def count_number_match
-      @number_match = @total_match.to_i - @exact_match.to_i
+      @number_match = @total_match - @exact_match
     end
 
-    def answer_plusses
-      @exact_match.times do
-        @answer.unshift("+")
+    def answer_plusses_and_minus
+      @exact_match.times do @answer.unshift("+")
       end
-    end
-
-    def answer_minus
-      @number_match.times do
-        @answer.push("-")
+      @number_match.times do @answer.push("-")
       end
     end
 
