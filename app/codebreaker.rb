@@ -14,70 +14,59 @@ class Codebreaker
     end
 
     def guess(input)
+      @input = input
       input_length_check(input)
-      no_matches(input)
-      making_input_array(input)
-      making_secret_number_array(@secret_number)
-
-      @answer =[]
-
-        4.times do
-          rotate_input_array
-          rotate_secret_number_array
-          mastermind
-        end
-
+      count_total_match
+      count_exact_match
+      count_number_match
+      @answer = []
+      answer_plusses
+      answer_minus
       answer_to_string
-
     end
 
-    private
+private
 
     def input_length_check(input)
-      if input.length != 4 || input.to_i == 0
+      if input.length != 4
         output.puts "Try guessing a number with four digits"
       else
-        return #nu gaat guess method wel verder, maar moet weer opnieuw starten!
-      end
-    end
-
-    def no_matches(input)
-      if input.to_i != @secret_number
-        output.puts ""
-      end
-    end
-
-    def making_input_array(input)
-      @input_array = input.split(//)
-    end
-
-    def making_secret_number_array(secret_number)
-      @secret_number_array = secret_number.split(//)
-    end
-
-    def rotate_input_array
-      x = @input_array.shift
-      @input_array << x
-    end
-
-    def rotate_secret_number_array
-      y = @secret_number_array.shift
-      @secret_number_array << y
-    end
-
-    def mastermind
-      if @input_array[0] == @secret_number_array[0]
-        @answer.unshift("+")
-      elsif @input_array[0] == @secret_number_array[1] || @input_array[0] == @secret_number_array[2] ||
-        @input_array[0] == @secret_number_array[3]
-        @answer.push("-")
-      else
         return
+      end
+    end
+
+    def count_total_match
+      @total_match = @secret_number.count(@input)
+    end
+
+    def count_exact_match
+    @exact_match = 0
+      for i in 0...@secret_number.length
+        if @secret_number[i] == @input[i]
+          @exact_match += 1
+      end
+      end
+    end
+
+    def count_number_match
+      @number_match = @total_match.to_i - @exact_match.to_i
+    end
+
+    def answer_plusses
+      @exact_match.times do
+        @answer.unshift("+")
+      end
+    end
+
+    def answer_minus
+      @number_match.times do
+        @answer.push("-")
       end
     end
 
     def answer_to_string
       output.puts @answer.join("")
     end
-end
+
+  end
 end
